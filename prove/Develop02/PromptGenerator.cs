@@ -1,0 +1,29 @@
+using System;
+
+public class PromptGenerator
+{
+    private List<string> _prompts = new List<string>()
+    {
+        "Who was the most interesting person I interacted with today?",
+        "What was the best part of my day?",
+        "What was the strongest emotion I felt today?",
+        "If I had one thing I could do over today, what would it be?",
+        "What am I grateful for today?",
+        "Describe a challenge I faced today.",
+        "What is a goal I have for the next month?",
+        "Write about someone who inspires me."
+    };
+
+    private Random _random = new Random();
+
+    public string GetRandomPrompt()
+    {
+        int index = _random.Next(_prompts.Count);
+        return _prompts[index];
+    }
+
+    public string GetPromptTwo()
+    {
+        return "How have I seen the hand of God today?";
+    } 
+}
