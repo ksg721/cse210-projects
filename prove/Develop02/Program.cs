@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 
+// I added a second prompt to the journal entries asking about seeing the hand of God during the day.
+
 class Program
 {
     static void Main(string[] args)
