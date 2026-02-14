@@ -4,6 +4,13 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello Develop03 World!");
+        Reference reference = Reference.CreateFromUserInput();
+
+        Console.WriteLine("Enter the scripture text:");
+        string text = Console.ReadLine();
+
+        Scripture scripture = new Scripture(reference, text);
+
+        scripture.StartMemorizing();
     }
 }
