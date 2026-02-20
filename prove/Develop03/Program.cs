@@ -14,3 +14,7 @@ class Program
         scripture.StartMemorizing();
     }
 }
+
+// I exceeded the requirements by having the user input the scripture and reference 
+// so they can do any scripture they want and I changed the word hiding to only hide
+// words that are not already hidden.
