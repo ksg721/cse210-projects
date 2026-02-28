@@ -4,6 +4,11 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello Develop04 World!");
+        Menu menu = new Menu();
+        menu.Display();
+        
     }
 }
+
+// I exceeded the requierments by having random prompts and questions for
+// the refelection and listing activities not repeat.
