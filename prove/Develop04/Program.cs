@@ -10,5 +10,3 @@ class Program
     }
 }
 
-// I exceeded the requierments by having random prompts and questions for
-// the refelection and listing activities not repeat.
