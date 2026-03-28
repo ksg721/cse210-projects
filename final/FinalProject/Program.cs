@@ -4,6 +4,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello FinalProject World!");
+        Bakery bakery = new Bakery();
+        bakery.Start();
     }
 }
