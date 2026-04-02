@@ -92,3 +92,6 @@ public class FileManager
         }
     }
 }
+
+// Used https://www.geeksforgeeks.org/c-sharp/dictionary-in-c-sharp/ to learn 
+// how to use a dictionary in c#
