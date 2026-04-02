@@ -1,16 +1,13 @@
+using System;
 using System.Collections.Generic;
 
 public class Order
 {
     private List<Product> _items;
-    private Customer _customer;
-    private double _orderTotal;
 
-    public Order(Customer customer)
+    public Order()
     {
-        _customer = customer;
         _items = new List<Product>();
-        _orderTotal = 0;
     }
 
     public void AddItem(Product item)
@@ -25,23 +22,23 @@ public class Order
 
     public double CalculateTotal()
     {
-        _orderTotal = 0;
+        double Total = 0;
 
         foreach (Product item in _items)
         {
-            _orderTotal += item.CalculatePrice();
+            Total += item.CalculatePrice();
         }
 
-        return _orderTotal;
-    }
-
-    public void ApplyDiscount(Discount discount)
-    {
-        _orderTotal -= discount.ApplyDiscount(this);
+        return Total;
     }
 
     public string GetOrderSummary()
     {
+        if (_items.Count == 0)
+        {
+            return "Your order is empty.";
+        }
+
         string summary = "Order Summary:\n";
 
         foreach (Product item in _items)
@@ -49,13 +46,18 @@ public class Order
             summary += "- " + item.GetDescription() + "\n";
         }
 
-        summary += "Total: $" + CalculateTotal();
+        summary += $"Total: ${CalculateTotal():F2}";
 
         return summary;
     }
 
     public void ListOrder()
     {
+        if (_items.Count == 0)
+        {
+            Console.WriteLine("Your order is empty.");
+            return;
+        }
         int i = 1;
         foreach (Product item in _items)
         {

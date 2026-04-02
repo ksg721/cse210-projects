@@ -3,19 +3,23 @@ public class Cake : Product
     private string _flavor;
     private string _frosting;
 
-    public Cake(string name, double basePrice, string flavor, string frostingType) : base(name, basePrice)
+    public Cake(double price, string flavor, string frosting) : base(price, $"{flavor} Cake")
     {
         _flavor = flavor;
-        _frosting = frostingType;
+        _frosting = frosting;
     }
 
     public override double CalculatePrice()
     {
-        return _basePrice + 5.0; // simple customization cost
+        if (_flavor == "Chocolate Carrot")
+        {
+            return GetPrice() + 1.0; 
+        }
+        return GetPrice();
     }
 
     public override string GetDescription()
     {
-        return $"{_flavor} cake with {_frosting} frosting";
+        return $"{GetName()} with {_frosting} frosting ${CalculatePrice():F2}";
     }
 }

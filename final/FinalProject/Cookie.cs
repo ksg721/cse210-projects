@@ -1,21 +1,22 @@
 public class Cookie : Product
 {
-    private int _quantity;
     private string _type;
+    private int _qantity;
 
-    public Cookie(string name, double basePrice, string type, int quantity) : base(name, basePrice)
+
+    public Cookie(double basePrice, string type, int quantity) : base(basePrice, $"{type} Cookie")
     {
         _type = type;
-        _quantity = quantity;
+        _qantity = quantity;
     }
 
     public override double CalculatePrice()
     {
-        return _basePrice * _quantity;
+        return GetPrice() * _qantity;
     }
 
     public override string GetDescription()
     {
-        return $"{_quantity} {_type} cookies";
+        return $"{_qantity} {GetName()} cookies ${CalculatePrice():F2}";
     }
 }

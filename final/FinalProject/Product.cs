@@ -1,12 +1,17 @@
-public class Product
+public abstract class Product
 {
-    protected string _name;
-    protected double _basePrice;
+    private double _price;
+    private string _name;
 
-    public Product(string name, double basePrice)
+    public Product(double price, string name)
     {
+        _price = price;
         _name = name;
-        _basePrice = basePrice;
+    }
+
+    public double GetPrice()
+    {
+        return _price;
     }
 
     public string GetName()
@@ -14,13 +19,6 @@ public class Product
         return _name;
     }
 
-    public virtual double CalculatePrice()
-    {
-        return _basePrice;
-    }
-
-    public virtual string GetDescription()
-    {
-        return _name;
-    }
+    public abstract double CalculatePrice();
+    public abstract string GetDescription();
 }

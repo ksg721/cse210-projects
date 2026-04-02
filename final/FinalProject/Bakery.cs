@@ -3,11 +3,17 @@ using System.Collections.Generic;
 
 public class Bakery
 {
-    Order _currentOrder;
+    private Order _currentOrder;
+    private List<Customer> _customers;
+    private Customer _currentCustomer;
+    private FileManager _fileManager;
+    private Menu menu = new Menu();
 
-    public Bakery()
+    public Bakery(List<Customer> customers)
     {
-        
+        _customers = customers;
+        _currentOrder = new Order();
+        _fileManager = new FileManager("customer_data.txt");
     }
         public void Start()
     {
@@ -34,7 +40,11 @@ public class Bakery
                     AddItemToOrder();
                     break;
                 case "2":
-                    Product item = new Cookie("cookie", 5, "cookie", 5);
+                    if (_currentOrder.CalculateTotal() == 0)
+                    {
+                        Console.WriteLine("Your order is empty.");
+                        break;
+                    }
                     Console.WriteLine("What item would you like to remove?");
                     _currentOrder.ListOrder();
                     choice = Console.ReadLine();
@@ -60,20 +70,29 @@ public class Bakery
     public void CreateOrder()
     {
         Console.Write("Enter customer name: ");
-        string name = Console.ReadLine();
+        string name = Console.ReadLine().Trim();
+        _currentCustomer = null;
 
-        int id = new Random().Next(1000, 9999);
-        Customer customer = new Customer(name, id);
+        foreach (Customer customer in _customers)
+        {
+            if (customer.GetName().Equals(name, StringComparison.OrdinalIgnoreCase))
+            {
+                _currentCustomer = customer;
+                break;
+            }
+        }
 
-        _currentOrder = new Order(customer);
-        customer.AddOrder(_currentOrder);
+        if (_currentCustomer == null)
+        {
+            _currentCustomer = new Customer(name);
+            _customers.Add(_currentCustomer);
+        }
 
-        Console.WriteLine("Order created for " + name);
+        Console.WriteLine($"Welcome, {_currentCustomer.GetName()}! You have {_currentCustomer.GetLoyaltyPoints()} loyalty points.");
     }
 
     public void AddItemToOrder()
     {
-        Menu menu = new Menu();
         menu.DisplayMenu();
         Product product = menu.GetSelection();
         _currentOrder.AddItem(product);
@@ -81,9 +100,13 @@ public class Bakery
 
     public void Checkout()
     {
-        double total = _currentOrder.CalculateTotal();
-        Console.WriteLine("\nOrder Total: $" + total);
+        Discount discount = new Discount(.9, 100);
 
-        Console.WriteLine("Thank you for your order!");
+        double total = discount.ApplyLoyaltyDiscount(_currentCustomer, _currentOrder.CalculateTotal());
+        Console.WriteLine($"Your total is: ${total:F2}");
+        _currentCustomer.AddLoyaltyPoints((int)total);
+        Console.WriteLine($"You have {_currentCustomer.GetLoyaltyPoints()} loyalty points.");
+
+        _fileManager.SaveCustomerData(_customers);
     }
 }

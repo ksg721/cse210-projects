@@ -1,36 +1,20 @@
-using System.Collections.Generic;
+using System;
 
 public class Customer
 {
     private string _name;
-    private int _customerId;
     private int _loyaltyPoints;
-    private List<Order> _orders;
 
-    public Customer(string name, int customerId)
+    public Customer(string name)
     {
         _name = name;
-        _customerId = customerId;
         _loyaltyPoints = 0;
-        _orders = new List<Order>();
     }
 
-    public Customer(string name, int customerId, int loyaltyPoints)
+    public Customer(string name, int loyaltyPoints)
     {
         _name = name;
-        _customerId = customerId;
         _loyaltyPoints = loyaltyPoints;
-        _orders = new List<Order>();
-    }
-
-    public void AddOrder(Order order)
-    {
-        _orders.Add(order);
-    }
-
-    public List<Order> GetOrders()
-    {
-        return _orders;
     }
 
     public void AddLoyaltyPoints(int points)
@@ -40,11 +24,16 @@ public class Customer
 
     public string GetCustomerInfo()
     {
-        return $"{_name} (ID: {_customerId}) - Points: {_loyaltyPoints}";
+        return $"{_name},{_loyaltyPoints}";
     }
 
     public int GetLoyaltyPoints()
     {
         return _loyaltyPoints;
+    }
+
+    public string GetName()
+    {
+        return _name;
     }
 }

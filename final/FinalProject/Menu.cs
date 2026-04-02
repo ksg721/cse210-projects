@@ -7,7 +7,6 @@ public class Menu
     private List<string> _cakeFrostings;
     private List<string> _cookieTypes;
     private List<string> _aebleskiverFillings;
-    private List<string> _aebleskiverToppings;
 
     public Menu()
     {
@@ -15,7 +14,6 @@ public class Menu
         _cakeFrostings = new List<string> { "Chocolate", "Vanilla", "Butter Cream", "Cream Cheese"};
         _cookieTypes = new List<string> { "Chocolate Chip", "Peanut Butter", "Oatmeal", "Sugar", "Snickerdoodle", "White Chocolate Macadamia Nut"};
         _aebleskiverFillings = new List<string> { "Strawberry", "Blueberry", "Cinnamon Apple", "Sausage", "Cheese", "Plain"};
-        _aebleskiverToppings = new List<string> { "Powdered Sugar", "Syrup", "Plain"};
     }
 
     public void DisplayMenu()
@@ -38,23 +36,58 @@ public class Menu
                 case "1":
                     string flavor = GetOption("Select a cake flavor:", _cakeFlavors);
                     string frosting = GetOption("Select a frosting:", _cakeFrostings);
-                    return new Cake($"{flavor} {frosting} frosting cake", 5, flavor, frosting);
+                    Console.WriteLine($"\nAdded {flavor} Cake with {frosting} frosting to your order");
+                    return new Cake(10, flavor, frosting);
 
                 case "2":
                     string cookieType = GetOption("Select a cookie type:", _cookieTypes);
                     int quantity = GetQuantity("How many Cookies do you want?");
-                    return new Cookie($"{cookieType} cookie", 5, cookieType, quantity);
+                    Console.WriteLine($"\nAdded {quantity} {cookieType} Cookies to your order");
+                    return new Cookie(2, cookieType, quantity);
 
                 case "3":
                     bool chips = GetYesNo("Would you like chocolate chips in your Banana Bread? (y/n)");
                     bool nuts = GetYesNo("Would you like nuts in your Banana Bread? (y/n)");
-                    return new BananaBread("Banana Bread", 5, nuts, chips);
+                    if (chips && nuts) 
+                    {
+                        Console.WriteLine("\nAdded Banana Bread with chocolate chips and nuts to your order");
+                    }
+                    else if (chips) 
+                    {
+                        Console.WriteLine("\nAdded Banana Bread with chocolate chips to your order");
+                    }
+                    else if (nuts) 
+                    {
+                        Console.WriteLine("\nAdded Banana Bread with nuts to your order");
+                    }
+                    else 
+                    {
+                        Console.WriteLine("\nAdded plain Banana Bread to your order");
+                    }
+                    return new BananaBread(5, nuts, chips);
 
                 case "4":
                     string filling = GetOption("Select a filling:", _aebleskiverFillings);
-                    string topping = GetOption("Select a topping:", _aebleskiverToppings);
+                    bool syrup = GetYesNo("Would you like syrup on your Aebleskivers? (y/n)");
+                    bool powderedSugar = GetYesNo("Would you like powdered sugar on your Aebleskivers? (y/n)");
                     quantity = GetQuantity("How many Aebleskivers do you want?");
-                    return new Aebleskiver($"{filling} Aebleskivers", 5, quantity, filling, topping);
+                    if (syrup && powderedSugar) 
+                    {
+                        Console.WriteLine($"\nAdded {quantity} Aebleskivers with {filling}, syrup, and powdered sugar to your order");
+                    }
+                    else if (syrup) 
+                    {
+                        Console.WriteLine($"\nAdded {quantity} Aebleskivers with {filling} and syrup to your order");
+                    }
+                    else if (powderedSugar) 
+                    {
+                        Console.WriteLine($"\nAdded {quantity} Aebleskivers with {filling} and powdered sugar to your order");
+                    }
+                    else 
+                    {
+                        Console.WriteLine($"\nAdded {quantity} Aebleskivers with {filling} to your order");
+                    }
+                    return new Aebleskiver(1, quantity, filling, syrup, powderedSugar);
 
                 default:
                     Console.WriteLine("Invalid selection. Please try again.\n");
