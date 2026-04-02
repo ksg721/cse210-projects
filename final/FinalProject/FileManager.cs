@@ -22,9 +22,10 @@ public class FileManager
             foreach (string line in lines)
             {
                 string[] parts = line.Split(',');
-                if (parts.Length >= 2 && int.TryParse(parts[1], out int loyaltyPoints))
+                if (parts.Length >= 2)
                 {
                     string name = parts[0];
+                    int loyaltyPoints = int.Parse(parts[1]);
                     customers.Add(new Customer(name, loyaltyPoints));
                 }
             }
@@ -35,43 +36,52 @@ public class FileManager
 
     public void SaveCustomerData(List<Customer> customers)
     {
-        try
+        Dictionary<string, int> customerData = new Dictionary<string, int>();
+
+        if (File.Exists(_filePath))
         {
-            Dictionary<string, int> customerData = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
-
-            if (File.Exists(_filePath))
+            string[] existingLines = File.ReadAllLines(_filePath);
+            foreach (string line in existingLines)
             {
-                string[] existingLines = File.ReadAllLines(_filePath);
-                foreach (string line in existingLines)
+                string[] parts = line.Split(',');
+                if (parts.Length >= 2)
                 {
-                    string[] parts = line.Split(',');
-                    if (parts.Length >= 2 && int.TryParse(parts[1], out int points))
-                    {
-                        string name = parts[0];
-                        customerData[name] = points;
-                    }
+                    string name = parts[0];
+                    int points = int.Parse(parts[1]);
+                    customerData[name] = points;
                 }
             }
+        }
 
-            foreach (Customer c in customers)
+        foreach (Customer c in customers)
+        {
+            string name = c.GetName();
+            int currentPoints = c.GetLoyaltyPoints();
+            int previousPointsInFile;
+            if (customerData.ContainsKey(name))
             {
-                string name = c.GetName();
-                int currentPoints = c.GetLoyaltyPoints();
-                int previousPointsInFile = customerData.ContainsKey(name) ? customerData[name] : 0;
-
-                int pointsToAdd = currentPoints - previousPointsInFile;
-                if (pointsToAdd < 0) pointsToAdd = 0;
-
-                if (customerData.ContainsKey(name))
-                {
-                    customerData[name] += pointsToAdd;
-                }
-                else
-                {
-                    customerData[name] = pointsToAdd;
-                }
+                previousPointsInFile = customerData[name];
+            }
+            else
+            {
+                previousPointsInFile = 0;
+            }
+        
+            int pointsToAdd = currentPoints - previousPointsInFile;
+            if (pointsToAdd < 0) 
+            {
+                pointsToAdd = 0;
             }
 
+            if (customerData.ContainsKey(name))
+            {
+                customerData[name] += pointsToAdd;
+            }
+            else
+            {
+                customerData[name] = pointsToAdd;
+            }
+            
             List<string> linesToWrite = new List<string>();
             foreach (var kvp in customerData)
             {
@@ -79,10 +89,6 @@ public class FileManager
             }
 
             File.WriteAllLines(_filePath, linesToWrite);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error saving customer data: {ex.Message}");
         }
     }
 }
