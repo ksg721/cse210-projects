@@ -108,8 +108,8 @@ public class Menu
             }
 
             Console.Write("Enter choice: ");
-            if (int.TryParse(Console.ReadLine(), out int choice) &&
-                choice >= 1 && choice <= options.Count)
+            int choice = int.Parse(Console.ReadLine());
+            if (choice >= 1 && choice <= options.Count)
             {
                 return options[choice - 1];
             }
